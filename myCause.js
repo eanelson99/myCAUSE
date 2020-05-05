@@ -1,9 +1,10 @@
-var oceansPromise = d3.json("oceans.json")
+var countriesPromise = d3.json("countries.json")
     
-oceansPromise.then(function(oceans)
+countriesPromise.then(function(countries)
     {
-        console.log("worked",oceans);
-        drawMap(oceans)
+        console.log("worked",countries);
+        drawMap(countries)
+       
     });
     (function(err){console.log("failed",err)})
 
@@ -11,20 +12,26 @@ oceansPromise.then(function(oceans)
 var path = d3.geoPath()
     .projection(d3.geoMercator())
 
+
 //bind data and create one path per GeoJSON feature
-var drawMap = function(oceans)
+var drawMap = function(countries)
 {
     var width = 1000;
-    var height = 600;
-    
+    var height = 550;
+   
     var svg = d3.select("svg")
         .attr("width",width)
         .attr("height",height)
-      
+        .attr("fill","#444")
+    
     svg.selectAll("path")
-    .data(oceans.geometries)
+    .data(countries.features)
     .enter()
     .append("path")
-    .attr("d",path);
+    .attr("d",path)
+    .attr("stroke","white");
+    
 }
+
+
     
