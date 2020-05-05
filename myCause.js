@@ -13,12 +13,17 @@ var path = d3.geoPath()
     .projection(d3.geoMercator())
 
 
+
 //bind data and create one path per GeoJSON feature
 var drawMap = function(countries)
 {
     var width = 1000;
     var height = 550;
    
+    
+    var projection = d3.geoMercator()
+        .translate([width/2,height/2])
+    
     var svg = d3.select("svg")
         .attr("width",width)
         .attr("height",height)
@@ -31,7 +36,9 @@ var drawMap = function(countries)
     .attr("d",path)
     .attr("stroke","white");
     
+    var color = d3.scaleQuantize()
+        .range("pink")
+    
 }
 
 
-    
