@@ -1,3 +1,8 @@
+
+//define path generator, using the geoMercator
+var path = d3.geoPath()
+    .projection(d3.geoMercator())
+
 var countriesPromise = d3.json("countries.json")
     
 countriesPromise.then(function(countries)
@@ -8,12 +13,6 @@ countriesPromise.then(function(countries)
     });
     (function(err){console.log("failed",err)})
 
-//define path generator, using the geoMercator
-var path = d3.geoPath()
-    .projection(d3.geoMercator())
-
-
-
 //bind data and create one path per GeoJSON feature
 var drawMap = function(countries)
 {
@@ -23,6 +22,7 @@ var drawMap = function(countries)
     
     var projection = d3.geoMercator()
         .translate([width/2,height/2])
+    
     
     var svg = d3.select("svg")
         .attr("width",width)
@@ -35,6 +35,21 @@ var drawMap = function(countries)
     .append("path")
     .attr("d",path)
     .attr("stroke","white");
+    
+    var highlightCountry = d3.select("svg")
+        .selectAll("path")
+        .classed("focus", function(features)
+                {
+                   
+                    if("United States of America" == features.properties.SOVEREIGNT)
+                    {
+                        return true
+                    }
+                    else
+                    {
+                        return false
+                    }
+                })
     
     svg.selectAll("circle")
         .data(countries.features)
@@ -57,7 +72,10 @@ var drawMap = function(countries)
                 console.log("data")
            })
 
+   
+    
 }
+
 
 //working out kinks on panning..dont know if I actually want to use it or if it is necessary for my final project
 /*var createPanButtons = function(countries)
@@ -157,7 +175,3 @@ var drawMap = function(countries)
     
    
 }*/
-
-
-
-
