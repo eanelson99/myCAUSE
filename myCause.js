@@ -4,20 +4,26 @@ var path = d3.geoPath()
     .projection(d3.geoMercator())
 
 var countriesPromise = d3.json("countries.json")
-    
+var WSvMSPromise = d3.csv("WSvMS.csv")  
 countriesPromise.then(function(countries)
     {
-        console.log("worked",countries);
-        drawMap(countries)
+        WSvMSPromise.then(function(teams)
+    {
+        console.log("worked",teams);
+        drawMap(countries, teams)
+    });
+    (function(err){console.log("failed",err)})
        
     });
     (function(err){console.log("failed",err)})
 
+
 //bind data and create one path per GeoJSON feature
-var drawMap = function(countries)
+var drawMap = function(countries,teams)
 {
-    var width = 1000;
+    var width = 2000;
     var height = 550;
+
    
     
     var projection = d3.geoMercator()
@@ -45,13 +51,247 @@ var drawMap = function(countries)
                     {
                         return true
                     }
+                    if("Germany" == features.properties.SOVEREIGNT)
+                    {
+                        return true
+                    }
+                    if("Netherlands" == features.properties.SOVEREIGNT)
+                    {
+                        return true
+                    }
+                    if("France" == features.properties.SOVEREIGNT)
+                    {
+                        return true
+                    }
+                    if("Sweden" == features.properties.SOVEREIGNT)
+                    {
+                        return true
+                    }
+                    if("England" == features.properties.SOVEREIGNT)
+                    {
+                        return true 
+                    }
+                    if("Australia" == features.properties.SOVEREIGNT)
+                    {
+                        return true
+                    }
+                    if("Canada" == features.properties.SOVEREIGNT)
+                    {
+                        return true
+                    }
+                    if("Brazil" == features.properties.SOVEREIGNT)
+                    {
+                        return true
+                    }
+                    if("Japan" == features.properties.SOVEREIGNT)
+                    {
+                        return true
+                    }
+                    if("Belgium" == features.properties.SOVEREIGNT)
+                    {
+                        return true
+                    }
+                    if("Uraguay" == features.properties.SOVEREIGNT)
+                    {
+                        return true
+                    }
+                    if("Croatia" == features.properties.SOVEREIGNT)
+                    {
+                        return true
+                    }
+                    if("Portugal" == features.properties.SOVEREIGNT)
+                    {
+                        return true
+                    }
+                    if("Spain" == features.properties.SOVEREIGNT)
+                    {
+                        return true
+                    }
                     else
                     {
                         return false
                     }
+        
                 })
-    
     svg.selectAll("circle")
+        .data(countries.features)
+        .enter()
+        .append("circle")
+        .attr("cx", function(features)
+             {
+                   if("United States of America" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Germany" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Netherlands" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("France" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Sweden" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("England" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Australia" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Canada" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Brazil" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Japan" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Belgium" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Uraguay" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Croatia" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Portugal" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Spain" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    else
+                    {
+                        console.log("N/A")
+                    }
+        
+                })
+        .attr("cy", function(features)
+             {
+                   if("United States of America" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Germany" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Netherlands" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("France" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Sweden" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("England" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Australia" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Canada" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Brazil" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Japan" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Belgium" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Uraguay" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Croatia" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Portugal" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    if("Spain" == features.properties.SOVEREIGNT)
+                    {
+                        return features.coordinates
+                    }
+                    else
+                    {
+                        console.log("N/A")
+                    }
+        
+                })
+        .attr("r",function(teams)
+              {
+                return teams.Ranking
+              })
+        .style("fill", "black")
+        .style("opacity", 0.25)
+        .append("title")
+        .text(function(teams)
+             {
+               return teams.Team + ":Ranking"
+             })
+        
+    //choropleth for Rankings
+    /*var color = d3.scaleQuantize()
+        .domain([d3.min(teams,function(teams)
+                {
+                    return Ranking
+                })],
+                [d3.max(teams,function(teams)
+                {
+                    return Ranking
+                })]
+               )
+        .range(["rgb(255,149,49)","rgb(117,12,255)"])*/
+    
+        
+        /*.on("click", function(features)
+           {
+                if("United States of America" == features.properties.SOVEREIGNT)
+                {
+                   return USWNT.Rankings
+                }
+                else
+                {
+                    console.log("N/A")
+                }
+           })*/
+    
+    /*svg.selectAll("circle")
         .data(countries.features)
         .enter()
         .append("circle")
@@ -70,7 +310,7 @@ var drawMap = function(countries)
         .on("click", function(countries)
            {
                 console.log("data")
-           })
+           })*/
 
    
     
