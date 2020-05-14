@@ -114,149 +114,18 @@ var drawMap = function(countries,teams)
         
                 })
     svg.selectAll("circle")
-        .data(countries.features)
+        .data(teams)
         .enter()
         .append("circle")
-        .attr("cx", function(features)
-             {
-                   if("United States of America" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Germany" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Netherlands" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("France" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Sweden" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("England" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Australia" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Canada" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Brazil" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Japan" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Belgium" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Uraguay" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Croatia" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Portugal" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Spain" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    else
-                    {
-                        console.log("N/A")
-                    }
-        
-                })
-        .attr("cy", function(features)
-             {
-                   if("United States of America" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Germany" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Netherlands" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("France" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Sweden" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("England" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Australia" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Canada" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Brazil" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Japan" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Belgium" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Uraguay" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Croatia" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Portugal" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    if("Spain" == features.properties.SOVEREIGNT)
-                    {
-                        return features.coordinates
-                    }
-                    else
-                    {
-                        console.log("N/A")
-                    }
-        
-                })
-        .attr("r",function(teams)
+        .attr("cx", function(teams)
               {
-                return teams.Ranking
+                return projection([teams.Lon,teams.Lat])[0]
               })
+        .attr("cy", function(teams)
+              {
+                return projection([teams.Lon,teams.Lat])[1]
+              })
+        .attr("r", 5)
         .style("fill", "black")
         .style("opacity", 0.25)
         .append("title")
