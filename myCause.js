@@ -6,18 +6,19 @@ countriesPromise.then(function(countries)
         WSvMSPromise.then(function(teams)
     {
         console.log("worked",teams);
-        drawMap(countries, teams)
+        drawMap(countries, teams);
+        initStack(countries,teams)
     });
     (function(err){console.log("failed",err)})
        
     });
     (function(err){console.log("failed",err)})
 
-
+var blank = " "
 //bind data and create one path per GeoJSON feature
 var drawMap = function(countries,teams)
 {
-    var width = 2000;
+    var width = 1250;
     var height = 550;
 
    
@@ -40,6 +41,7 @@ var drawMap = function(countries,teams)
     .append("path")
     .attr("d",path)
     .attr("stroke","white");
+    
     
     var highlightCountry = d3.select("svg")
         .selectAll("path")
@@ -66,7 +68,7 @@ var drawMap = function(countries,teams)
                     {
                         return true
                     }
-                    if("England" == features.properties.SOVEREIGNT)
+                    if("United Kingdom" == features.properties.SOVEREIGNT)
                     {
                         return true 
                     }
@@ -90,7 +92,7 @@ var drawMap = function(countries,teams)
                     {
                         return true
                     }
-                    if("Uraguay" == features.properties.SOVEREIGNT)
+                    if("Uruguay" == features.properties.SOVEREIGNT)
                     {
                         return true
                     }
@@ -125,12 +127,12 @@ var drawMap = function(countries,teams)
                 return projection([teams.Lon,teams.Lat])[1]
               })
         .attr("r", 5)
-        .style("fill", "black")
-        .style("opacity", 0.25)
+        .style("fill", "#21a606")
+        .style("opacity", 0.70)
         .append("title")
         .text(function(teams)
              {
-               return teams.Team + ":Ranking"
+               return teams.Team + blank + "Ranking:" + teams.Ranking
              })
         
     //choropleth for Rankings
@@ -184,26 +186,148 @@ var drawMap = function(countries,teams)
     
 }
 
-/*var creatStackLayout = (countries,teams)
+var createStackLayout = function(countries,teams,target,graph,yScale,xScale)
 {
-    var stack = d3.stack()
-        .keys(["W","L","T"]);
+   var stack = d3.stack()
+        .keys([teams.W, teams.L, teams.T]);
     
-    var series = stack(Team);
+    var series = stack(teams)
     
     var colors = d3.scalelinear()
-        .range([])
+        .range(["rgb(168,141,31)","rgb(171,89,106)","rgb(89,128,173)"])
     
     var groups = svg.selectAll("g")
         .data(series)
         .enter()
         .append("g")
-        .style("fill" function(Team,index)
+        .style("fill", function(Team,index)
             {
-                return colors(index)
+                return colors(Team.index)
             })
     
-}*/
+    var rects = groups.selectAll("rect")
+        .data(teams)
+        .enter()
+        .append("rect")
+        .attr("x", function(teams,index)
+             {return xScale(index)})
+        .attr("y", function(teams)
+             {return yScale(series[0])})
+        .attr("height", function(teams)
+             {return yScale(teams[1])-yScale(teams[0])})
+        .attr("width", xScale.bandwidth())
+}
+
+var createLabels = function(screen,margins,graph,target)
+{
+    var labels = d3.select(target)
+        .append("g")
+        .classed("labels",true)
+    
+    labels.append("text")
+        .text("W-L-T Record")
+        .classed("title",true)
+        .attr("text-anchor","middle")
+        .attr("x",margins.left+(graph.width/2))
+        .attr("y",margins.top)
+    
+    labels.append("text")
+        .text("National Team")
+        .classed("label",true)
+        .attr("text-anchor","middle")
+        .attr("x",margins.left+(graph.width/2))
+        .attr("y",screen.height)
+    
+    labels.append("g")
+        .attr("transform","translate(20,"+ 
+              (margins.top+(graph.height/2))+")")
+        .append("text")
+        .text("Wins/Losses/Ties")
+        .classed("label",true)
+        .attr("text-anchor","middle")
+        .attr("transform","rotate(90)")
+    
+}
+
+var createAxes = function(screen,margins,target,graph,xScale,yScale)
+{
+        var xAxis = d3.axisBottom(xScale)
+        
+        var yAxis = d3.axisLeft(yScale)
+        
+        var axes = d3.select(target)
+            .append("g")
+        
+        axes.append("g")
+        .attr("transform","translate("+margins.left+","
+             +(margins.top+graph.height)+")")
+        .call(xAxis)
+    axes.append("g")
+        .attr("transform","translate("+margins.left+","
+             +(margins.top)+")")
+        .call(yAxis)
+        
+}
+
+var displayStackLayout = function(countries,teams,target)
+{   
+    
+    var screen = {width:1000, height:600};
+    
+    var margins = {top:50, bottom:40, left:70, right:40};
+    
+    var graph = 
+        {
+            width: screen.width-margins.left-margins.right,
+            height: screen.height-margins.top-margins.bottom,
+        }
+    
+    d3.select(target)
+        .attr("width",screen.width)
+        .attr("height",screen.height)
+    
+    var g = d3.select(target)
+        .append("g")
+        .classed("graph",true)
+        .attr("transform","translate("+margins.left+","+margins.top+")")
+    
+    var record = function(teams)
+        {return teams.W + teams.L + teams.L}
+    
+    var xScale = d3.scaleBand()
+        .domain([teams,function(teams){return teams.Team}])
+        .range([0,graph.width])
+    
+    var yScale = d3.scaleLinear()
+        .domain([0,d3.max(teams,record)])
+        .range(graph.height, 0)
+    
+    createStackLayout(countries,teams,target,graph,yScale,xScale)
+    createLabels(screen,margins,graph,target)
+    createAxes(screen,margins,target,graph,xScale,yScale)
+    
+    initStack(countries,teams)
+}
+
+var clearMap= function()
+{
+    d3.selectAll("projection")
+        .remove()
+    d3.selectAll("path")
+        .remove();
+    d3.selectAll("circle")
+        .remove();
+}
+
+var initStack = function(countries,teams)
+{
+    d3.select("#stack")
+    .on("clicked",function()
+       {
+        clearTable()
+        displayStackLayout(countries,teams,target)
+       })
+}
 
 
 //working out kinks on panning..dont know if I actually want to use it or if it is necessary for my final project
