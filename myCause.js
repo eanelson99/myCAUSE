@@ -186,8 +186,8 @@ var drawMap = function(countries,teams)
     
 }
 
-var createStackLayout = function(countries,teams,target,graph,yScale,xScale)
-{
+var createStackLayout = function(countries,teams,yScale,xScale)
+{ 
    var stack = d3.stack()
         .keys([teams.W, teams.L, teams.T]);
     
@@ -271,7 +271,7 @@ var createAxes = function(screen,margins,target,graph,xScale,yScale)
 
 var displayStackLayout = function(countries,teams,target)
 {   
-    
+
     var screen = {width:1000, height:600};
     
     var margins = {top:50, bottom:40, left:70, right:40};
@@ -281,6 +281,7 @@ var displayStackLayout = function(countries,teams,target)
             width: screen.width-margins.left-margins.right,
             height: screen.height-margins.top-margins.bottom,
         }
+   
     
     d3.select(target)
         .attr("width",screen.width)
@@ -294,37 +295,37 @@ var displayStackLayout = function(countries,teams,target)
     var record = function(teams)
         {return teams.W + teams.L + teams.L}
     
+    
     var xScale = d3.scaleBand()
         .domain([teams,function(teams){return teams.Team}])
         .range([0,graph.width])
+    console.log("x",xScale)
     
     var yScale = d3.scaleLinear()
         .domain([0,d3.max(teams,record)])
         .range(graph.height, 0)
+    console.log("y",yScale)
     
-    createStackLayout(countries,teams,target,graph,yScale,xScale)
+
+    
+    createStackLayout(countries,teams,yScale,xScale)
     createLabels(screen,margins,graph,target)
     createAxes(screen,margins,target,graph,xScale,yScale)
     
-    initStack(countries,teams)
 }
 
 var clearMap= function()
 {
-    d3.selectAll("projection")
+    d3.selectAll("#map")
         .remove()
-    d3.selectAll("path")
-        .remove();
-    d3.selectAll("circle")
-        .remove();
 }
 
-var initStack = function(countries,teams)
+var initStack = function(countries,teams,target)
 {
     d3.select("#stack")
     .on("clicked",function()
        {
-        clearTable()
+        clearMap()
         displayStackLayout(countries,teams,target)
        })
 }
