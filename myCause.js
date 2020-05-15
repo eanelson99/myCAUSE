@@ -1,8 +1,4 @@
 
-//define path generator, using the geoMercator
-var path = d3.geoPath()
-    .projection(d3.geoMercator())
-
 var countriesPromise = d3.json("countries.json")
 var WSvMSPromise = d3.csv("WSvMS.csv")  
 countriesPromise.then(function(countries)
@@ -28,6 +24,9 @@ var drawMap = function(countries,teams)
     
     var projection = d3.geoMercator()
         .translate([width/2,height/2])
+    
+    var path = d3.geoPath()
+        .projection(projection)
     
     
     var svg = d3.select("svg")
@@ -184,6 +183,27 @@ var drawMap = function(countries,teams)
    
     
 }
+
+/*var creatStackLayout = (countries,teams)
+{
+    var stack = d3.stack()
+        .keys(["W","L","T"]);
+    
+    var series = stack(Team);
+    
+    var colors = d3.scalelinear()
+        .range([])
+    
+    var groups = svg.selectAll("g")
+        .data(series)
+        .enter()
+        .append("g")
+        .style("fill" function(Team,index)
+            {
+                return colors(index)
+            })
+    
+}*/
 
 
 //working out kinks on panning..dont know if I actually want to use it or if it is necessary for my final project
