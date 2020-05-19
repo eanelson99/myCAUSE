@@ -1,9 +1,12 @@
 body {margin:0; background-color:#a8e2ff;}
 .focus{fill:#ff9531;}
 h1{font-size:28px; color:#444; background-color:white; text-align:center; }
-h2{font-size:20px; color:white;}
-h3{color:#444; text-decoration:underline; text-align:center;}
+h2{font-size:20px; color:white; text-align:center;}
+h3{color:#444; text-decoration:underline; text-align:center; font-size:25px;}
 h2,h3{margin-left: 5px;}
 p{font-size: 12px;}
-#stacklayout{margin-right:10px;}
 #tooltip{background-color:white; text-align:center; color:#444; font-size:16px; padding:5px;}
+i {font-size:24px;}
+.maplegend{font-size:12px;}
+#down{float:right; background-color: #444; border:none; color:white; margin: 5; height:20;}
+#right{float:right; background-color:#444; border:none; color:white; margin: 5; height:20;}
